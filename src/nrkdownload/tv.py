@@ -72,9 +72,12 @@ class Program:
             LOG.debug("%s is not part of a series", self.title)
             return None
         if not self._season_number:
-            for i, season in enumerate(self._series.seasons):
+            for season in self._series.seasons:
                 if self.program_id in season.episode_ids:
-                    self._season_number = i
+                    try:
+                        self._season_number = int(season.name) - 1
+                    except ValueError:
+                        self._season_number = season.idx
         return self._season_number
 
     @property
